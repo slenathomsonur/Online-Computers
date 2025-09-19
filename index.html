@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Tester</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #4fc3f7;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #bbbbbb;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: rgba(30, 30, 40, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card h2 {
+            color: #4fc3f7;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #444;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        button {
+            background: #4fc3f7;
+            color: #0f2027;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #29b6f6;
+        }
+        
+        .test-results {
+            margin-top: 30px;
+        }
+        
+        .result-item {
+            background: rgba(40, 40, 50, 0.8);
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .warning {
+            background: #ff9800;
+            color: black;
+        }
+        
+        .error {
+            background: #f44336;
+            color: white;
+        }
+        
+        .github-repos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .repo-card {
+            background: rgba(50, 50, 60, 0.8);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .repo-card:hover {
+            transform: translateY(-5px);
+            background: rgba(60, 60, 70, 0.8);
+        }
+        
+        .repo-card h3 {
+            color: #4fc3f7;
+            margin-bottom: 10px;
+        }
+        
+        .repo-card p {
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .actions button {
+            flex: 1;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #bbbbbb;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Computer Tester</h1>
+            <p class="subtitle">Test websites and GitHub repositories in one place</p>
+        </header>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h2>Website Tester</h2>
+                <div class="input-group">
+                    <label for="website-url">Website URL</label>
+                    <input type="text" id="website-url" placeholder="https://example.com">
+                </div>
+                <button id="test-website">Test Website</button>
+                
+                <div class="input-group" style="margin-top: 20px;">
+                    <label for="url-list">Multiple URLs (one per line)</label>
+                    <textarea id="url-list" rows="5" placeholder="https://google.com&#10;https://github.com&#10;https://stackoverflow.com" style="width: 100%; padding: 10px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; border: none;"></textarea>
+                </div>
+                <button id="test-multiple">Test Multiple Websites</button>
+            </div>
+            
+            <div class="card">
+                <h2>GitHub Repository Tester</h2>
+                <div class="input-group">
+                    <label for="github-repo">GitHub Repository</label>
+                    <input type="text" id="github-repo" placeholder="username/repository">
+                </div>
+                <button id="test-github">Test GitHub Repository</button>
+                
+                <h2 style="margin-top: 20px;">Popular GitHub Repositories</h2>
+                <div class="github-repos">
+                    <div class="repo-card" data-repo="microsoft/vscode">
+                        <h3>VS Code</h3>
+                        <p>Visual Studio Code</p>
+                    </div>
+                    <div class="repo-card" data-repo="facebook/react">
+                        <h3>React</h3>
+                        <p>JavaScript library for UI</p>
+                    </div>
+                    <div class="repo-card" data-repo="tensorflow/tensorflow">
+                        <h3>TensorFlow</h3>
+                        <p>Machine Learning framework</p>
+                    </div>
+                    <div class="repo-card" data-repo="github/docs">
+                        <h3>GitHub Docs</h3>
+                        <p>GitHub's documentation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card test-results">
+            <h2>Test Results</h2>
+            <div id="results-container">
+                <!-- Results will be displayed here -->
+                <div class="result-item">
+                    <div>
+                        <strong>Welcome to Computer Tester</strong>
+                        <p>Add websites or GitHub repositories to test them</p>
+                    </div>
+                    <span class="status">READY</span>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <button id="clear-results">Clear Results</button>
+                <button id="export-results">Export Results</button>
+                <button id="run-all-tests">Run All Tests</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Computer Tester &copy; 2023 | Test your websites and GitHub repositories</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultsContainer = document.getElementById('results-container');
+            const clearButton = document.getElementById('clear-results');
+            const exportButton = document.getElementById('export-results');
+            const runAllButton = document.getElementById('run-all-tests');
+            
+            // Test single website
+            document.getElementById('test-website').addEventListener('click', function() {
+                const url = document.getElementById('website-url').value;
+                if (url) {
+                    testWebsite(url);
+                } else {
+                    alert('Please enter a website URL');
+                }
+            });
+            
+            // Test multiple websites
+            document.getElementById('test-multiple').addEventListener('click', function() {
+                const urlsText = document.getElementById('url-list').value;
+                const urls = urlsText.split('\n').filter(url => url.trim() !== '');
+                
+                if (urls.length > 0) {
+                    urls.forEach(url => testWebsite(url));
+                } else {
+                    alert('Please enter at least one website URL');
+                }
+            });
+            
+            // Test GitHub repository
+            document.getElementById('test-github').addEventListener('click', function() {
+                const repo = document.getElementById('github-repo').value;
+                if (repo) {
+                    testGitHubRepo(repo);
+                } else {
+                    alert('Please enter a GitHub repository in format: username/repository');
+                }
+            });
+            
+            // Set up popular repo cards
+            document.querySelectorAll('.repo-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const repo = this.getAttribute('data-repo');
+                    document.getElementById('github-repo').value = repo;
+                    testGitHubRepo(repo);
+                });
+            });
+            
+            // Clear results
+            clearButton.addEventListener('click', function() {
+                resultsContainer.innerHTML = '';
+                addResult('Cleared all test results', 'All previous test results have been cleared.', 'info');
+            });
+            
+            // Export results
+            exportButton.addEventListener('click', function() {
+                alert('Export functionality would be implemented here. In a real application, this would download a CSV or JSON file with your test results.');
+            });
+            
+            // Run all tests
+            runAllButton.addEventListener('click', function() {
+                const urlsText = document.getElementById('url-list').value;
+                const urls = urlsText.split('\n').filter(url => url.trim() !== '');
+                const repo = document.getElementById('github-repo').value;
+                
+                if (urls.length === 0 && !repo) {
+                    alert('Please add websites or a GitHub repository to test');
+                    return;
+                }
+                
+                urls.forEach(url => testWebsite(url));
+                if (repo) {
+                    testGitHubRepo(repo);
+                }
+            });
+            
+            // Function to test a website
+            function testWebsite(url) {
+                addResult(`Testing website: ${url}`, 'Testing website availability...', 'warning');
+                
+                // In a real application, this would be an actual fetch request
+                // For demo purposes, we're simulating the request
+                setTimeout(() => {
+                    // Simulate different responses
+                    const random = Math.random();
+                    if (random < 0.7) {
+                        addResult(`Website: ${url}`, 'Website is online and responding correctly', 'success');
+                    } else if (random < 0.9) {
+                        addResult(`Website: ${url}`, 'Website responded slowly', 'warning');
+                    } else {
+                        addResult(`Website: ${url}`, 'Website is not responding or returned an error', 'error');
+                    }
+                }, 1500);
+            }
+            
+            // Function to test a GitHub repository
+            function testGitHubRepo(repo) {
+                addResult(`Testing GitHub repository: ${repo}`, 'Checking repository status...', 'warning');
+                
+                // In a real application, this would be an API call to GitHub
+                // For demo purposes, we're simulating the request
+                setTimeout(() => {
+                    // Simulate different responses
+                    const random = Math.random();
+                    if (random < 0.8) {
+                        addResult(`GitHub: ${repo}`, 'Repository is accessible and exists', 'success');
+                    } else {
+                        addResult(`GitHub: ${repo}`, 'Repository not found or access denied', 'error');
+                    }
+                }, 2000);
+            }
+            
+            // Function to add a result to the results container
+            function addResult(title, message, status) {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                
+                let statusClass = '';
+                switch(status) {
+                    case 'success':
+                        statusClass = 'success';
+                        break;
+                    case 'warning':
+                        statusClass = 'warning';
+                        break;
+                    case 'error':
+                        statusClass = 'error';
+                        break;
+                    default:
+                        statusClass = 'warning';
+                }
+                
+                resultItem.innerHTML = `
+                    <div>
+                        <strong>${title}</strong>
+                        <p>${message}</p>
+                    </div>
+                    <span class="status ${statusClass}">${status.toUpperCase()}</span>
+                `;
+                
+                resultsContainer.prepend(resultItem);
+            }
+        });
+    </script>
+</body>
+</html>
